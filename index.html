@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aklim - Future Mobility</title>
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background: black;
+            color: white;
+            text-align: center;
+        }
+
+        /* Navigation Bar */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            background: rgba(0, 0, 0, 0.15);
+            position: absolute;
+            top: 0;
+            z-index: 100;
+            border-radius: 60px; /* Adjust the value as needed */
+            width: 1500px; /* Set your desired width */
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 1%; /* Adjust the percentage as needed */
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;  /* Align to the left */
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            padding-left: 10%;  /* Adds space on the left */
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            transition: opacity 0.2s ease-in-out;
+            opacity: 1;
+        }
+
+        .hero h1, .cta {
+            position: relative;
+            z-index: 2;
+            max-width: 60%;  /* Constrain width for a better layout */
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.125rem;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .hero .line2 {
+            display: block;
+            text-align: left; /* Centre le deuxième texte */
+            margin-top: 10px; /* Ajoute de l'espace entre les lignes */
+            text-transform: uppercase; /* Transforme le texte en majuscules */
+        }
+
+        .cta {
+            padding: 10px 20px;
+            background: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+        .nav .logo img {
+            height: auto;
+            width: 90%;
+            max-width: 90px; /* Adjust as needed */
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <!-- Navigation -->
+    <div class="nav">
+        <div class="logo">
+            <a href="#">
+                <img src="C:\Users\Zizol\Desktop\hero shots - aklim website\logoAklim.png" alt="AKLIM Logo">
+            </a>
+        </div>
+        <div class="menu">
+            <a href="#">Mobilier Urbain</a>
+            <a href="#">Sport et Fitness</a>
+            <a href="#">Aire de Jeux</a>
+            <a href="#">Contactez-nous</a>
+            <a href="#">Rechercher</a>
+            <a href="#">Mon Compte</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <video id="hero-video" autoplay muted playsinline>
+            <source src="C:\Users\Zizol\Desktop\hero shots - aklim website\aklimSlide02.mp4" type="video/mp4">
+            <source src="C:\Users\Zizol\Desktop\hero shots - aklim website\aklimSlide03.mp4" type="video/mp4">
+            <source src="C:\Users\Zizol\Desktop\hero shots - aklim website\aklimSlide04.mp4" type="video/mp4">
+            <source src="C:\Users\Zizol\Desktop\hero shots - aklim website\aklimSlide05.mp4" type="video/mp4">
+        </video>
+        <h1>
+            <span class="line1">L'URBAIN PAR ESSENCE</span><br>
+            <span class="line2">Transformez votre espace avec AKLIM</span>
+        </h1>
+        <button class="cta">En savoir plus</button>
+    </div>
+
+    <!-- JavaScript for Video Transition -->
+    <script>
+          const videoSources = [
+      "aklimSlide02.mp4",
+      "aklimSlide03.mp4",
+      "aklimSlide04.mp4",
+      "aklimSlide05.mp4"
+      ];
+      let currentIndex = 0;
+      const videoElement = document.getElementById("hero-video");
+
+      // Function to preload the next video
+      function preloadNextVideo() {
+      const nextIndex = (currentIndex + 1) % videoSources.length;
+      const nextVideo = document.createElement('video');
+      nextVideo.src = videoSources[nextIndex];
+      nextVideo.load();
+      return nextVideo;
+      }
+
+      // Set the initial video source
+      videoElement.src = videoSources[currentIndex];
+      videoElement.load();
+
+      videoElement.addEventListener("ended", function() {
+      // Start the fade-out effect
+      videoElement.style.opacity = 0;
+
+      // Preload the next video
+      const nextVideo = preloadNextVideo();
+
+      // Wait for the fade-out to complete before changing the video
+      setTimeout(() => {
+          // Update the current index and video source
+          currentIndex = (currentIndex + 1) % videoSources.length;
+          videoElement.src = nextVideo.src;
+
+          // Wait for the video to load and then fade-in
+          videoElement.load();
+          videoElement.addEventListener('canplay', () => {
+              videoElement.style.opacity = 1;
+              videoElement.play();
+          }, { once: true }); // Ensure the event listener is removed after execution
+      }, 500); // Matches the fade duration (0.5 second)
+      });
+    </script>
+</body>
+</html>
